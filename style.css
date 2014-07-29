@@ -6,6 +6,8 @@
 		font-size: 14px;
 		font-family: calibri,arial, tahoma, verdana, 'calibri light', sans-serif;
 		font-weight: normal;
+		text-decoration: none;
+		list-style-type: none;
 	}
 .left
 	{
@@ -29,11 +31,16 @@
 	}
 #container
 	{
-
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
 	}
 #middleBody
 	{
+		position: relative;
 		width: 1240px;
+		min-height: 100%;
 		margin: 0 auto;
 		background-color: #fff;
 		box-shadow: 0 0 6px 0 rgba(0,0,0,.25);
@@ -108,9 +115,14 @@
 		color: #F31D1D;
 		font-weight: bold
 	}
+.error a
+	{
+		color: #5074a0;
+	}
 .allVideo
 	{
-		padding: 20px 40px;
+		padding: 40px;
+		padding-bottom: 60px;
 	}
 .head .meta
 	{
@@ -161,5 +173,45 @@
 		text-transform: uppercase;
 		text-decoration: none;
 		font-weight: bold;
+	}
+#footer
+	{
+		height: 18px;
+		margin: 0 auto;
+		width: 1240px;
+		position: absolute;
+		bottom: 0;
+		background-color: #edede9;
+		border-top: 1px solid #dadada;
+		border-bottom: 1px solid #dadada;
+		padding: 16px 0;
+	}
+#footer ul li
+	{
+		float: left;
+		font-size: 14px;
+		color: #4B4B4B;
+		margin-left: 60px;
+	}
+#footer li a
+	{
+		color: #5074a0;
+	}
+#footer .me
+	{
+		font-size: 14px;
+		color: #696969;
+		margin-right: 60px;
+	}
+.me .web
+	{
+		margin-left: 5px;
+		color: #4B4B4B;
+		font-weight: bold;
+		letter-spacing: 1px;
+	}
+.me .web:hover
+	{
+		text-decoration: underline;
 	}
 /***********************/
