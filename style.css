@@ -80,6 +80,7 @@
 	}
 .form input[name="submit"]
 	{
+		width: 128px;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 		height: 35px;
