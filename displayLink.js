@@ -13,7 +13,7 @@ function getLink( event )
 	var value = document.querySelector( '.form input[name="url"]' ).value;
 
 	var url = "fetchYoutube.php?url=" + value;
-	console.log( url);
+	//console.log( url);
 	var request = new XMLHttpRequest;
 	request.open( 'GET', url );
 	request.send( null );
@@ -24,12 +24,13 @@ function getLink( event )
 		{
 			if( request.readyState === 4 && request.status == 200 )
 			{
+				//console.log( request.response );
 				var data = JSON.parse( request.response );
-				console.log(data);
+				//console.log(data);
 				if( Object.keys( data )[0] === '0' )
 				{
 					// playlist
-					console.log('playlist');
+					//console.log('playlist');
 
 					for( var each in data )
 					{
@@ -42,14 +43,14 @@ function getLink( event )
 				}
 				else if( 'error' in data )
 				{
-					console.log('error');
+					//console.log('error');
 
 					output = '<div class="error">'+data.error+'</div>';
 				}
 				else
 				{
 					// single video
-					console.log('single video');
+					//console.log('single video');
 
 					display( data );
 				}

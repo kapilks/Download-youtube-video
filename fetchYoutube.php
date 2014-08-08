@@ -29,7 +29,7 @@
 
 		header( "Content-Type: application/json" );
 		
-		$maxTime = 5 * 60;// 5 min
+		$maxTime = 5 * 60; // 5 min
 		ini_set ( 'max_execution_time', $maxTime );
 		
 		$url = $_GET['url'];
@@ -168,7 +168,7 @@
 
 		parse_str( $response, $parseResponse );
 
-		if( $parseResponse['status'] !== 'ok' )
+		if( isset( $parseResponse['status'] ) && $parseResponse['status'] !== 'ok' )
 		{
 			errorMessage( $parseResponse['reason'] );
 		}
@@ -269,20 +269,17 @@
 
 			$response = $request->getResponseBody();
 			
-			preg_match_all( '#watch\?v=([^&]*)&feature=youtube_gdata_player#', $response, $matches );
+			preg_match_all( '#watch\?v=([^&]{11})&feature=youtube_gdata_player#', $response, $matches );
 			
 			$allIds = array_merge( $allIds, $matches[1] );
 			$start += $maxResults;
-			//echo count($matches[1]);
-			//echo "</br>";
-			//echo count($maxResults);
-			//echo "</br>";
+			
 			if( count( $matches[1] ) < $maxResults )
 			{
 				break;
 			}
 		}
-		//echo count($allIds);
+		
 		return $allIds;
 		
 	}
@@ -308,9 +305,9 @@
 		$url = explode( ',', $link );
 		$allLinks = '';
 
-		foreach ( $url as $key => $value ) 
+		foreach ( $url as $key => $value )
 		{
-
+ 
 			// itags
 			preg_match( '#itag=([^&]*)#', $value, $matches );
 			$itag = $matches[1];
