@@ -13,7 +13,7 @@ function getLink( event )
 	var value = document.querySelector( '.form input[name="url"]' ).value;
 
 	var url = "fetchYoutube.php?url=" + value;
-	//console.log( url);
+	console.log( url);
 	var request = new XMLHttpRequest;
 	request.open( 'GET', url );
 	request.send( null );
@@ -24,7 +24,7 @@ function getLink( event )
 		{
 			if( request.readyState === 4 && request.status == 200 )
 			{
-				//console.log( request.response );
+				console.log( request.response );
 				var data = JSON.parse( request.response );
 				//console.log(data);
 				if( Object.keys( data )[0] === '0' )
