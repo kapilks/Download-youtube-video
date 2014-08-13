@@ -294,27 +294,6 @@
 				$this->defaultOutputFile_ = $matches[2];
 				$this->fileExtension_ = substr( $matches[2], strrpos($matches[2], '.') );
 			}// from mime type list
-			/*else
-			{
-				// only setup extension no filename
-
-				$lines = file( "mimeTypeExtension.txt", FILE_IGNORE_NEW_LINES );
-				$totalLines = count( $lines );
-				$contentType = $this->getContentType();
-				for( $i = 0; $i < $totalLines; $i++ )
-				{
-					$parts = explode( "\t", $lines[$i] );
-					// parts[0] - Description
-					// parts[1] - Content-Type
-					// parts[2] - Extension
-					// parts[3] - Description
-					if( $parts[1] === $contentType )
-					{
-						$this->fileExtension_ = $parts[2];
-						break;
-					}
-				}
-			}*/
 		}
 
 
