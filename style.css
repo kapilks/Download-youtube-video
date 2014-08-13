@@ -167,7 +167,7 @@
 	{
 		font-size: 16px;
 		font-weight: bold;
-		color: #4B4B4B;
+		color: #7a7a7a;
 		margin-bottom: 8px;
 	}
 .eachLink .quality, .eachLink .size
@@ -177,6 +177,8 @@
 	}
 .eachLink a
 	{
+		margin-top: 6px;
+		display: inline-block;
 		color: #5074a0;
 		font-size: 12px;
 		text-transform: uppercase;

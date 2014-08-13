@@ -294,7 +294,7 @@
 				$this->defaultOutputFile_ = $matches[2];
 				$this->fileExtension_ = substr( $matches[2], strrpos($matches[2], '.') );
 			}// from mime type list
-			else
+			/*else
 			{
 				// only setup extension no filename
 
@@ -314,7 +314,7 @@
 						break;
 					}
 				}
-			}
+			}*/
 		}
 
 
