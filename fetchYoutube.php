@@ -19,6 +19,7 @@
 	 *
 	 */
 
+
 	include 'httpRequest.php';
 	
 	if( isset( $_GET['url'] ) )
@@ -29,7 +30,7 @@
 
 		header( "Content-Type: application/json" );
 		
-		$maxTime = 5 * 60; // 5 min
+		$maxTime = 20 * 60; // 20 min
 		ini_set ( 'max_execution_time', $maxTime );
 		
 		$url = $_GET['url'];
@@ -37,7 +38,15 @@
 		
 		if( strpos( $url, 'http' ) === false )
 		{
+			// making in format http://xyz....
 			$url = "http://$url";
+		}
+		
+		if( strpos( $url, 'www' ) === false )
+		{
+			// making in format http://www.xyz....
+			$totalReplacement = 1;
+			$url = str_replace( 'http://', 'http://www.', $url, $totalReplacement );
 		}
 
 		if( isset($_GET['list'] ) )
@@ -46,7 +55,7 @@
 		}
 		
 		$youtubeFormat = '#^https?://www.youtube.com/#';
-		preg_match( $youtubeFormat, $url,$matches);
+		preg_match( $youtubeFormat, $url,$matches );
 		
 		if( preg_match( $youtubeFormat, $url ) !== 1 )
 		{
@@ -255,8 +264,10 @@
 		{
 			$matches = [];
 
-			$playlistUrl = "http://gdata.youtube.com/feeds/api/playlists/$playlistId?alt=json&start-index=$start&max-results=$maxResults";//&max-results=$maxResults&start-index=$start";
+			$playlistUrl = "http://gdata.youtube.com/feeds/api/playlists/$playlistId?alt=json&start-index=$start&max-results=$maxResults";
+			//&max-results=$maxResults&start-index=$start";
 			//var_dump($playlistUrl);
+			
 			$request = new HTTPRequest();
 			if( $request->open( 'GET', $playlistUrl ) )
 			{
@@ -268,8 +279,8 @@
 			}
 
 			$response = $request->getResponseBody();
-			
-			preg_match_all( '#watch\?v=([^&]{11})&feature=youtube_gdata_player#', $response, $matches );
+			$idPattern = '#watch\?v=([^&]{11})&feature=youtube_gdata_player#';
+			preg_match_all( $idPattern, $response, $matches );
 			
 			$allIds = array_merge( $allIds, $matches[1] );
 			$start += $maxResults;

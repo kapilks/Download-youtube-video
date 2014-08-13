@@ -29,6 +29,8 @@
 		clear: both;
 		height: 0;
 	}
+
+
 #container
 	{
 		position: fixed;
@@ -105,7 +107,7 @@
 	}
 .loading
 	{
-		padding: 20px;
+		padding: 60px;
 		text-align: center;
 	}
 .error
@@ -134,6 +136,10 @@
 	{
 		height: 100px;
 	}
+.thumbnail
+	{
+		border:1px solid #dbdbdb;
+	}
 .thumbnail img
 	{
 		height: 100%;
@@ -154,13 +160,15 @@
 		margin-right: 30px;
 		margin-bottom: 30px;
 		border: 1px solid #ccc;
-		box-shadow: 0 0 4px #ccc;
+		width: 95px;
+		box-shadow: 0 0 4px #ccc,0 0 20px #F1F1F1 inset;
 	}
 .eachLink .type
 	{
 		font-size: 16px;
 		font-weight: bold;
 		color: #4B4B4B;
+		margin-bottom: 8px;
 	}
 .eachLink .quality, .eachLink .size
 	{
