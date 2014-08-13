@@ -59,7 +59,7 @@
 		
 		if( preg_match( $youtubeFormat, $url ) !== 1 )
 		{
-			errorMessage( "Not a valid youtube link" );
+			errorMessage( "Not a valid Youtube link" );
 		}
 
 
@@ -97,7 +97,7 @@
 			 *	Not valid url
 			 */
 
-			errorMessage( "This is not a valid youtube link" );
+			errorMessage( "This is not a valid Youtube link" );
 		}
 	}
 
