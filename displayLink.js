@@ -6,7 +6,7 @@ form.addEventListener( 'submit', getLink, false );
 
 function getLink( event )
 {
-	
+
 	event.preventDefault();
 
 	showLoading();
@@ -51,7 +51,7 @@ function getLink( event )
 		clearTimeout(timer);
 		hideLoading();	// For single download
 
-		if(e.readyState != EventSource.CLOSED)
+		if(request.readyState != EventSource.CLOSED)
 		{
 			displayCommonError();
 		}
@@ -101,7 +101,7 @@ function getLink( event )
 	
 	function display( object )
 	{
-		console.log(object);
+		object = JSON.parse(object)
 
 		var output = '';
 
