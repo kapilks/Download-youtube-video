@@ -36,7 +36,7 @@
 		private $requestMethod_;
 		private $requestHeaders_;
 		private $channel_;
-		private $allowedRequestMethod = [ 'get' => 1, 'post' => 1, 'head' => 1 ];
+		private $allowedRequestMethod = array( 'get' => 1, 'post' => 1, 'head' => 1 );
 		private $responseBody_;
 		private $error_;
 		private $responseHeaders_;
@@ -185,12 +185,6 @@
 				return $this->error_;
 			}
 			
-			//if( preg_match( '#^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$#', $url ) === 0 )
-			//{
-				// invalid url ( does not support localhost url )
-			//	$this->error_ = 'The requested url is not valid';
-			//	return;
-			//}
 
 			$this->requestMethod_ 	= $method;
 			$this->requestUrl_ 		= $url;

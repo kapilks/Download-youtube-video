@@ -28,8 +28,10 @@
 		 *	When any url is passed
 		 */
 
-		header( "Content-Type: application/json" );
-		
+		// Implementing Serevr-Sent Event
+		header('Content-Type: text/event-stream');
+		header('Cache-Control: no-cache');
+
 		$maxTime = 20 * 60; // 20 min
 		ini_set ( 'max_execution_time', $maxTime );
 		
@@ -71,7 +73,7 @@
 				 *	All link from playlist
 				 */
 
-				echo getPlaylistLinks( $url );
+				getPlaylistLinks( $url );
 			}
 			else
 			{
@@ -79,7 +81,7 @@
 				 *	Get only single video specified by id
 				 */
 
-				echo getIdLinks( $url );
+				getIdLinks( $url );
 			}
 
 		}
@@ -89,7 +91,7 @@
 			 *	All link from playlist
 			 */
 
-			echo getPlaylistLinks( $url );
+			getPlaylistLinks( $url );
 		}
 		else
 		{
@@ -115,20 +117,12 @@
 
 		$allVideoIds = fetchIdFromPlaylist( $id );
 
-		$output = '';
 		foreach ( $allVideoIds as $key => $value ) 
 		{
 			$youtubeUrl = "http://www.youtube.com/watch?v=$value";
 		
-			$details = getIdLinks( $youtubeUrl );
-
-			$output .= ", \"$key\":$details";
+			getIdLinks( $youtubeUrl );
 		}
-
-		$output = substr( $output, 2 );
-		$output = "{".$output."}";
-
-		return $output;
 	}
 
 	function getIdLinks( $url )
@@ -140,7 +134,12 @@
 		$id = getId( $url );
 		$jsonString = fetchLinksFromId( $id );
 
-		return $jsonString;
+		echo "event: singleLink\n";
+		echo "data: $jsonString\n\n";
+
+		// Flushes output as soon as it get links for a single video
+		ob_flush();
+		flush();
 	}
 
 	function getId( $url )
@@ -172,10 +171,10 @@
 			errorMessage( "Something went wrong try again later" );
 		}
 
-
 		$response = $request->getResponseBody();
 
 		parse_str( $response, $parseResponse );
+		
 
 		if( isset( $parseResponse['status'] ) && $parseResponse['status'] !== 'ok' )
 		{
@@ -232,9 +231,10 @@
 
 		$output = "{";
 
-		$title !== '' && $output = "$output\"title\":\"$title\"";
-		$author !== '' && $output = "$output, \"author\":\"$author\"";
-		$thumbnail !== '' && $output = "$output, \"thumbnail\":\"$thumbnail\"";
+		$title 		!== '' && $output = "$output\"title\":\"$title\"";
+		$author 	!== '' && $output = "$output, \"author\":\"$author\"";
+		$thumbnail 	!== '' && $output = "$output, \"thumbnail\":\"$thumbnail\"";
+		
 		$output .= ", \"duration\":\"$duration\"";
 
 		if( isset( $parseResponse['url_encoded_fmt_stream_map'] ) )
@@ -258,11 +258,11 @@
 
 		$start = 1;
 		$maxResults = 25;
-		$allIds = [];
+		$allIds = array();
 
 		while( true )
 		{
-			$matches = [];
+			$matches = array();
 
 			$playlistUrl = "http://gdata.youtube.com/feeds/api/playlists/$playlistId?alt=json&start-index=$start&max-results=$maxResults";
 			//&max-results=$maxResults&start-index=$start";
@@ -279,6 +279,7 @@
 			}
 
 			$response = $request->getResponseBody();
+
 			$idPattern = '#watch\?v=([^&]{11})&feature=youtube_gdata_player#';
 			preg_match_all( $idPattern, $response, $matches );
 			
@@ -300,7 +301,7 @@
 		$delimiter = ',';
 		$allTags = explode( $delimiter, $allTags );
 
-		$assocItags = [];
+		$assocItags = array();
 		
 		foreach ( $allTags as $key => $value )
 		{
@@ -312,28 +313,32 @@
 	}
 
 	function parseVideoUrl( $link, $assocItags, $title )
-	{
+	{		
 		$url = explode( ',', $link );
+		
 		$allLinks = '';
 
 		foreach ( $url as $key => $value )
 		{
- 
 			// itags
 			preg_match( '#itag=([^&]*)#', $value, $matches );
+
 			$itag = $matches[1];
 			$quality = $assocItags[$itag];
 			
 			// type
 			preg_match( '#type=([^&]*)#', $value, $matches );
+
 			$type = $matches[1];
 			$type = explode( ';', urldecode( $type ) );
 			$type = getFileType( $type[0] );
+			//var_dump($type);
 
 			// location
 			preg_match( '#url=([^&]*)#', $value, $matches );
 			$location = $matches[1];
 			$location = urldecode( $location );
+			//var_dump($location);
 
 			// size
 			$request = new HTTPRequest();
@@ -348,6 +353,7 @@
 			}
 
 			$size = $request->getContentLength();
+
 			$size = byteTo( $size, 3 );
 
 			// making JSON
@@ -462,12 +468,12 @@
 
 	function errorMessage( $error )
 	{
-		echo "{";
-		echo "\"error\":\"$error\"";
-		echo "}";
+		echo "event: myError\n";
+
+		echo "data: {\n";
+		echo "data: \"error\":\"$error\"\n";
+		echo "data: }\n\n";
 
 		exit;
 	}
-
-
 ?>

@@ -6,9 +6,11 @@ form.addEventListener( 'submit', getLink, false );
 
 function getLink( event )
 {
+	
 	event.preventDefault();
 
-	document.querySelector( '.loading' ).classList.remove( 'hidden' );
+	showLoading();
+
 	document.querySelector( '.allVideo' ).innerHTML = '';
 	
 	var value = document.querySelector( '.form input[name="url"]' ).value;
@@ -17,102 +19,91 @@ function getLink( event )
 	
 	//console.log( url );
 	
-	var request = new XMLHttpRequest;
-	request.open( 'GET', url );
-	request.send( null );
+
+	var request = new EventSource(url);
+
+	showLoading();
+
+	var timeOutInterval = 3 * 60 * 1000; // 5 min for each single video
+	var timer = setTimeout(timeOut, timeOutInterval); 
 
 	var output = '';
 
-	request.onreadystatechange = function()
+
+	request.addEventListener('singleLink', displaySingleLink);
+	request.addEventListener('error', displayErrorDetail);
+	request.addEventListener('myError', displayCustomError);
+
+	function displaySingleLink(e)
+	{
+		clearTimeout(timer);
+
+		display(e.data);
+
+		timer = setTimeout(timeOut, timeOutInterval);
+	}
+
+
+	function displayErrorDetail(e)
+	{
+		request.close();
+
+		clearTimeout(timer);
+		hideLoading();	// For single download
+
+		if(e.readyState != EventSource.CLOSED)
 		{
-			if( request.readyState === 4 && request.status == 200 )
-			{
-				var contentType = "application/json";
-				
-				//console.log( request.response );
-				if( request.getResponseHeader( 'Content-Type' ) !== contentType )
-				{
-					commonError();
-					
-					return;
-				}
-				
-				var data;
-				try
-				{
-					data = JSON.parse( request.response );
-				}
-				catch( err )
-				{
-					commonError();
-					
-					return;
-				}
-				
-				//console.log(data);
-				if( Object.keys( data )[0] === '0' )
-				{
-					// playlist
-
-					for( var each in data )
-					{
-						if( data.hasOwnProperty( each ) )
-						{
-							display( data[each] );
-						}
-					}
-				}
-				else if( 'error' in data )
-				{
-					// error
-					
-					displayError( data.error );
-				}
-				else
-				{
-					// single video
-
-					display( data );
-				}
-
-				render();
-				
-			}
+			displayCommonError();
 		}
+	}
+
+
+	function displayCustomError(e)
+	{
+		request.close();
+
+		clearTimeout(timer);
+
+		displayError(e.data);
+	}
 	
-	request.onerror = commonError;
-	
-	request.ontimeout = function()
-		{
-			var msg = "Request timed out. Try again";
-			displayError( msg );
-			
-			render();
-		}
-	
-	function commonError()
+	function timeOut()
+	{
+		request.close();
+
+		displayError("Server Is Taking Too Much Time To Respond");
+	}
+
+	function displayCommonError()
 	{
 		var msg = "Something went wrong. Try again";
 		displayError( msg );
-			
-		render();
 	}
 	
-	function render()
+	function hideLoading()
 	{
 		document.querySelector( '.loading' ).classList.add( 'hidden' );
-
-		document.querySelector('.allVideo').innerHTML = output;
-		output = '';
 	}
-	
+
+	function showLoading()
+	{
+		document.querySelector( '.loading' ).classList.remove( 'hidden' );
+	}
+
 	function displayError( msg )
 	{
-		output = '<div class="error">'+msg+'</div>';
+		hideLoading();
+
+		var output = '<div class="error">'+msg+'</div>';
+
+		document.querySelector( '.allVideo' ).innerHTML = output;
 	}
 	
 	function display( object )
 	{
+		console.log(object);
+
+		var output = '';
 
 		output 	+=	 '<div class="eachVideo afterClear">';
 		output 	+= 	 	'<div class="head afterClear">'+
@@ -144,5 +135,8 @@ function getLink( event )
 		}					
 						
 		output +=	'</div>';
+
+		// Appending Output
+		document.querySelector( '.allVideo' ).innerHTML += output;
 	}
 }
