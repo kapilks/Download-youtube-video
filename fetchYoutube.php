@@ -470,9 +470,7 @@
 	{
 		echo "event: myError\n";
 
-		echo "data: {\n";
-		echo "data: \"error\":\"$error\"\n";
-		echo "data: }\n\n";
+		echo "data: $error\n\n";
 
 		exit;
 	}
