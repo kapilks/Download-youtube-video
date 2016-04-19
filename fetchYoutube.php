@@ -256,18 +256,16 @@
 	 	 *	Return all video id from the playlist in an ARRAY
 		 */
 
-		$start = 1;
-		$maxResults = 25;
-		$allIds = array();
+		$allIds = [];
+		$myApiKey = "AIzaSyC1gw4tthomnXU3updw0NDuEkJyYMr4omQ";
+		$pageToken = "";
 
 		while( true )
 		{
-			$matches = array();
+			$matches = [];
 
-			$playlistUrl = "http://gdata.youtube.com/feeds/api/playlists/$playlistId?alt=json&start-index=$start&max-results=$maxResults";
-			//&max-results=$maxResults&start-index=$start";
-			//var_dump($playlistUrl);
-			
+			$playlistUrl = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=$playlistId&key=$myApiKey&pageToken=$pageToken";
+
 			$request = new HTTPRequest();
 			if( $request->open( 'GET', $playlistUrl ) )
 			{
@@ -280,14 +278,22 @@
 
 			$response = $request->getResponseBody();
 
-			$idPattern = '#watch\?v=([^&]{11})&feature=youtube_gdata_player#';
-			preg_match_all( $idPattern, $response, $matches );
+			preg_match_all("#videoId\": \"([^\"]+)#", $response, $matches);
 			
 			$allIds = array_merge( $allIds, $matches[1] );
-			$start += $maxResults;
 			
-			if( count( $matches[1] ) < $maxResults )
+			////////////////////////////////////////////////////
+			// Requesting next page
+			$pageToken = [];
+			preg_match("#nextPageToken\": \"([^\"]+)#", $response, $pageToken);
+			if(isset($pageToken[1]))
 			{
+				$pageToken = $pageToken[1];
+				//var_dump($pageToken);
+			}
+			else
+			{
+				//echo "Done";
 				break;
 			}
 		}
