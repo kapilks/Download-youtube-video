@@ -1,0 +1,46 @@
+.detail
+	{
+		padding-bottom: 60px;
+	}
+.support, .urlDetail
+	{
+		padding: 40px 60px;
+		background-color: #edede8;
+		border-bottom: 1px solid #dadada;
+		font-size: 19px;
+		color: #636363;
+		text-transform: capitalize;
+	}
+.eachUrl
+	{
+		padding-left: 60px;
+		margin-top: 35px;
+	}
+.eachUrl h3
+	{
+		font-size: 17px;
+		font-family: consolas;
+		color: #7e7e7e;
+		margin-left: 10px;
+	}
+.urlDetail
+	{
+		border: 1px solid #dadada;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		font-size: 18px;
+		display: inline-block;
+	}
+.url
+	{
+		display: inline-block;
+		padding: 6px 15px;
+		border: 1px solid #ccc;
+		margin-bottom: 15px;
+	}
+.url span
+	{
+		font-size: 18px;
+		color:#555;
+	}
+		
