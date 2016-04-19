@@ -1,23 +1,40 @@
-Download-youtube-video
+# Download-youtube-video
 ======================
-[Use It Here](http://kapilkumarsingh.in/projects/Download-youtube-video/)
 
-A script for fetching the link to video files of youtube
+An app for fetching the link to video files of youtube in different video formats
 
-Script fetchYoutube.php done all work for getting the links for videos
-and output as JSON object
+Script `fetchYoutube.php` do all the work for getting the links for videos for
+link passed as `url` parameter and output them as **JSON object**
 
-It also support for fetching all video in a playlist
-For getting single video pass url parameter with value as youtube link
+It also support for fetching all video from a playlist
 
-```
-fetchYoutube.php?url=https://www.youtube.com/watch?v=2gLq4Ze0Jq4
-```
-For getting the the whole playlist  you can use id of playlist with list parameter
-```
-fetchYoutube.php?url=https://www.youtube.com/playlist?list=PLhBgTdAWkxeCrJj7-ld9RTYBjH7FrClrs
-```
-or pass video id of any video of playlist , playlist id and all parameter
-```
-fetchYoutube.php?url=https://www.youtube.com/watch?v=9moAdEslwkg&list=PLhBgTdAWkxeCrJj7-ld9RTYBjH7FrClrs&all=true
-```
+## Use case
+  Pass link to video as url paramater to `fetchYoutube.php`
+  
+  - For getting single video pass `videoId` in link for `v` parameter 
+
+      ```
+      fetchYoutube.php?url=https://www.youtube.com/watch?v=videoId
+      ```
+  - For getting the the whole playlist  you can use `playlistId` for `list` parameter
+  
+      ```
+      fetchYoutube.php?url=https://www.youtube.com/playlist?list=playlistId
+      ```
+      
+      or pass `videoId` of any video of playlist , `playlistId` and `all=true`
+      
+      ```
+      fetchYoutube.php?url=https://www.youtube.com/watch?v=videoId&list=playlistId&all=true
+      ```
+      
+## Screenshots
+  
+  1.
+    ![Loading](screenshots/loading.png)
+  
+  2.
+    ![Single Video](screenshots/single_video.png)
+  
+  3.
+    ![Playlist Video](screenshots/whole_playlist.png)
