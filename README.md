@@ -1,10 +1,10 @@
 # Download-youtube-video
 
-> An app for fetching the link to video files of youtube in different video formats
+> An app for fetching the links to video files of youtube in different video formats
 
-Script `fetchYoutube.php` do all the work for getting the links for videos passed<br/> as `url` parameter and output them as **JSON object**.
+Script `fetchYoutube.php` does all the work for getting the links for videos passed<br/> as `url` parameter and output them as **JSON object**.
 
-It also support extracting all video from a playlist.
+It also supports extracting all video from a playlist.
 
 **YouTube Data API v3** is used to get details about videos and playlist.
 
